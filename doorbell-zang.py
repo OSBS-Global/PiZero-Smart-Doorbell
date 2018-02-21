@@ -85,6 +85,7 @@ if __name__ == '__main__':
 
     all_zones = soco.discover()
     # alert uri to send to sonos - this uri must be available to Sonos
+    # please change the URL to a publicly available doorbell sound
     alert_sound = 'http://front-door.ddns.net:8080/doorbell2.wav'
 
 #doorbell sound play through sonos
@@ -102,6 +103,7 @@ if __name__=='__main__':
          input_state = GPIO.input(23)
          if input_state == False:
             print('Someone is at the door!\r')
+	    # outbound SMS is here using Zang
 	    try:
     		smsMessage = smsMessagesConnector.sendSmsMessage(
         		to='14168305230',
@@ -111,7 +113,7 @@ if __name__=='__main__':
 	    except ZangException as e:
               	print(e)
             cyanOn()
-       #sonos play sound for doorbell, calling sip phone and push notification
+       #sonos play sound for doorbell and calling using Zang SIP domain (code found inside phone-zang.sh) 
 	    p3 = Process(target = call_phone)
 	    p2 = Process(target = play_doorbell)
 	    p3.start()
